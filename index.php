@@ -56,8 +56,7 @@
             <div class="col-sm-3">
                 <h2>Categories</h2>
                 <div class="list-group">
-                    <?php include "./presentation/categoryP.php"; ?>
-                    <?php
+                    <?php include "./presentation/categoryP.php";
                     $cp = new CategoryP();
                     $cp->ShowAllCategories();
                     ?>
@@ -65,17 +64,13 @@
             </div>
             <div class="col-sm-9">
                 <div class="row">
+                    <?php
+                    include "./presentation/productP.php";
+                    $pp = new ProductP();
+                    //$pp->ShowProductInCategory(1);
+                    $pp->ShowProductsByUser();
+                    ?>
 
-                    <div class="col-sm-4">
-                        <div class="card" style="width:400px">
-                            <img class="card-img-top" src="include/images/img.png" alt="Card image">
-                            <div class="card-body">
-                                <h4 class="card-title">John Doe</h4>
-                                <p class="card-text">Some example text.</p>
-                                <a href="#" class="btn btn-primary">See Profile</a>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>

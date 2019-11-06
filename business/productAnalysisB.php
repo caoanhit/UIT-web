@@ -1,0 +1,11 @@
+<?php include "./data/database.php"; ?>
+<?php
+    class ProductAnalysisB{
+        public function UpdateViewOfProduct($product_id){
+            $now= date("Y-m-d H:i:s");
+            $sql = "INSERT INTO `product_analysis`(`product_id`, `visisted_date`,`to_date) VALUES ({$product_id},{$now})";
+            $db =new Database();
+            $db->insert($sql);
+        }
+    }
+?>
