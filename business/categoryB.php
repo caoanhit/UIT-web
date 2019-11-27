@@ -2,12 +2,39 @@
 <?php
 class CategoryB
 {
+    private $cat_list = null;
+    private $MAX_PRODUCT = 3;
     public function GetAllCategories()
     {
         $sql = "SELECT * FROM Category";
         $db = new Database();
         $result = $db->select($sql);
 
+        return $result;
+    }
+    public function GetAmountOfProductInCategory($cat_id)
+    {
+        $sql = "SELECT COUNT(*) AS NUM FROM product WHERE cat_id={$cat_id}";
+        $db = new Database();
+        $result = $db->select($sql);
+        $row = mysqli_fetch_array($result);
+        $num = $row['NUM'];
+        return $num;
+    }
+    public function CalculatNumberOfLinks($cat_id)
+    {
+        $num = $this->GetAmountOfProductInCategory($cat_id);
+        $max = $this->MAX_PRODUCT;
+        $result = (float) $num / $max;
+        $result = ceil($result);
+        return $result;
+    }
+    public function GetProductsInGroup($cat_id, $link_num)
+    {
+        $offset = ($link_num - 1) * $this->MAX_PRODUCT;
+        $sql = "SELECT *FROM `product` WHERE `cat_id`={$cat_id} LIMIT {$offset},{$this->MAX_PRODUCT}";
+        $db = new Database();
+        $result = $db->select($sql);
         return $result;
     }
 }

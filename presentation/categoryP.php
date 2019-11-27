@@ -1,5 +1,6 @@
 <?php include "./business/categoryB.php" ?>
 <?php
+
 class CategoryP
 {
     public function ShowAllCategories()
@@ -18,6 +19,23 @@ class CategoryP
             $count++;
         }
     }
+    public function ShowPages()
+    {
+        $cat_id = $this->GetCategory();
+        $page_num = $this->GetPage();
+        $cb = new CategoryB();
+        $page_count = $cb->CalculatNumberOfLinks($cat_id);
+        if ($page_count > 1) {
+            for ($i = 1; $i <= $page_count; $i++) {
+                if ($i != $page_num) {
+                    $page_link = <<< DELIMITER
+                    <a href="index.php?category={$cat_id}&page={$i}" >[{$i}]</a>
+                    DELIMITER;
+                    echo $page_link;
+                } else echo $i;
+            }
+        }
+    }
     public function SetStyleForCurrentCategory($count)
     {
         $cat_id = $this->GetCategory();
@@ -27,7 +45,6 @@ class CategoryP
         }
         return $style;
     }
-
     public function GetCategory()
     {
         $cat_id = 1;
@@ -36,6 +53,15 @@ class CategoryP
         else
             $cat_id = $_GET['category'];
         return $cat_id;
+    }
+    public function GetPage()
+    {
+        $page_num = 1;
+        if (!isset($_GET['page']))
+            $page_num = 1;
+        else
+            $page_num = $_GET['page'];
+        return $page_num;
     }
 }
 ?>

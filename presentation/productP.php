@@ -94,10 +94,11 @@ class ProductP
 
     public function ShowProductsInCategory($cat_id)
     {
-        $pb = new ProductB();
+        $cb = new CategoryB();
         $cp = new CategoryP();
         $cat_id = $cp->GetCategory();
-        $result = $pb->GetAllProductsFromCategory($cat_id);
+        $page = $cp->GetPage();
+        $result = $cb->GetProductsInGroup($cat_id, $page);
 
         while ($row = mysqli_fetch_array($result)) {
             $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id']);

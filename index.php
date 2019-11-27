@@ -73,6 +73,12 @@
 
 
                 </div>
+                <div class="row ">
+                    <?php
+                    $cp->ShowPages();
+                    ?>
+
+                </div>
             </div>
         </div>
     </div>

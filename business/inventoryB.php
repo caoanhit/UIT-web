@@ -32,7 +32,7 @@ class InventoryB
     {
         $TO = "'" . $to . "'";
         $FROM = "'" . $from . "'";
-        $sql = "SELECT DISTINCT product_id FROM inventory_performance WHERE from_date={$FROM} AND to_date={$TO}";
+        $sql = "SELECT DISTINCT product_id FROM inventory_performance WHERE from_date>={$FROM} AND to_date<={$TO}";
         $db = new Database();
         $result = $db->select($sql);
         return $result;
@@ -119,4 +119,3 @@ class InventoryB
         return $result;
     }
 }
-?>
