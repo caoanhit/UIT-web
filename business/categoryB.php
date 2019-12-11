@@ -23,14 +23,28 @@ class CategoryB
     }
     public function CalculatNumberOfLinks($cat_id)
     {
+        $result;
+        $session_name="numPages_". $cat_id;
+        if(isset($_SESSION["{$session_name}"])){
+            $result=$_SESSION["{$session_name}"];
+            return $result;
+        }
         $num = $this->GetAmountOfProductInCategory($cat_id);
         $max = $this->MAX_PRODUCT;
         $result = (float) $num / $max;
         $result = ceil($result);
+        $_SESSION["{$session_name}"] = $result;
         return $result;
     }
     public function GetProductsInGroup($cat_id, $link_num)
     {
+        $result;
+        $session_name="listProducts_". $cat_id. "_". $link_num;
+        if(isset($_SESSION["{$session_name}"])){
+            $result=$_SESSION["{$session_name}"];
+            return $result;
+        }
+
         $offset = ($link_num - 1) * $this->MAX_PRODUCT;
         $sql = "SELECT *FROM `product` WHERE `cat_id`={$cat_id} LIMIT {$offset},{$this->MAX_PRODUCT}";
         $db = new Database();

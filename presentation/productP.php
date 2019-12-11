@@ -48,6 +48,11 @@ class ProductP
             DELIMITER;
         echo $product;
     }
+    public function VarForProductName($cat_id, $page_id,$product_name, $count){
+        $session_name = $cat_id. "_" .$page_id . "_".$product_name ."_". $count;
+        $_SESSION["{$session_name}"]=$product_name;
+    }
+
     public function ShowProduct($name, $price, $id)
     {
         $product = <<<DELIMITER
