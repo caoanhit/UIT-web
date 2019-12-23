@@ -14,7 +14,7 @@ class ProductP
         $pb = new ProductB();
         $result = $pb->GetProductsByID($product_id);
         $row = mysqli_fetch_array($result);
-        $this->ShowSingleProduct($row['product_name'], $row['product_price']);
+        $this->ShowSingleProduct($row['product_name'], $row['product_price'], $row['product_img']);
 
         $pab = new ProductAnalysisB();
         $pab->UpdateViewOfProduct($product_id);
@@ -31,12 +31,13 @@ class ProductP
         return $product_id;
     }
 
-    public function ShowSingleProduct($name, $price)
+    public function ShowSingleProduct($name, $price, $img)
     {
+        $price = number_format($price, 0, ",", ".") . " đ";
         $product = <<<DELIMITER
             <div class="col-sm-12">
                 <div class="card" >
-                    <img class="card-img-top" src="include/images/img.png" alt="Card image">
+                    <img class="card-img-top" src="include/images/{$img}" alt="Card image">
                     <div class="card-body >
                         <h4 class="card-title">{$name}</h4>
                         <p class="card-text">{$price}</p>
@@ -48,18 +49,20 @@ class ProductP
             DELIMITER;
         echo $product;
     }
-    public function VarForProductName($cat_id, $page_id,$product_name, $count){
-        $session_name = $cat_id. "_" .$page_id . "_".$product_name ."_". $count;
-        $_SESSION["{$session_name}"]=$product_name;
+    public function VarForProductName($cat_id, $page_id, $product_name, $count)
+    {
+        $session_name = $cat_id . "_" . $page_id . "_" . $product_name . "_" . $count;
+        $_SESSION["{$session_name}"] = $product_name;
     }
 
-    public function ShowProduct($name, $price, $id)
+    public function ShowProduct($name, $price, $id, $img)
     {
+        $price = number_format($price, 0, ",", ".") . " đ";
         $product = <<<DELIMITER
         <div class="col-sm-4">
             <div class="card" >
                 <a href="item.php?product_id={$id}">
-                    <img class="card-img-top" src="include/images/img.png" alt="Card image">
+                    <img class="card-img-top" src="include/images/{$img}" alt="Card image">
                 </a>
                 <div class="card-body >
                     <h4 class="card-title">{$name}</h4>
@@ -82,7 +85,7 @@ class ProductP
             $pb = new ProductB();
             $result = $pb->GetProductsByID($x);
             $row = mysqli_fetch_array($result);
-            $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id']);
+            $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id'], $row['product_img']);
         }
     }
 
@@ -106,7 +109,7 @@ class ProductP
         $result = $cb->GetProductsInGroup($cat_id, $page);
 
         while ($row = mysqli_fetch_array($result)) {
-            $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id']);
+            $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id'], $row['product_img']);
         }
     }
 }

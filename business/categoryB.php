@@ -23,10 +23,9 @@ class CategoryB
     }
     public function CalculatNumberOfLinks($cat_id)
     {
-        $result;
-        $session_name="numPages_". $cat_id;
-        if(isset($_SESSION["{$session_name}"])){
-            $result=$_SESSION["{$session_name}"];
+        $session_name = "numPages_" . $cat_id;
+        if (isset($_SESSION["{$session_name}"])) {
+            $result = $_SESSION["{$session_name}"];
             return $result;
         }
         $num = $this->GetAmountOfProductInCategory($cat_id);
@@ -38,10 +37,9 @@ class CategoryB
     }
     public function GetProductsInGroup($cat_id, $link_num)
     {
-        $result;
-        $session_name="listProducts_". $cat_id. "_". $link_num;
-        if(isset($_SESSION["{$session_name}"])){
-            $result=$_SESSION["{$session_name}"];
+        $session_name = "listProducts_" . $cat_id . "_" . $link_num;
+        if (isset($_SESSION["{$session_name}"])) {
+            $result = $_SESSION["{$session_name}"];
             return $result;
         }
 

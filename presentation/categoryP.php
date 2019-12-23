@@ -29,10 +29,15 @@ class CategoryP
             for ($i = 1; $i <= $page_count; $i++) {
                 if ($i != $page_num) {
                     $page_link = <<< DELIMITER
-                    <a href="index.php?category={$cat_id}&page={$i}" >[{$i}]</a>
+                    <li class="page-item "><a class="page-link" href="index.php?category={$cat_id}&page={$i}">{$i}</a></li>
                     DELIMITER;
                     echo $page_link;
-                } else echo $i;
+                } else {
+                    $page_link = <<< DELIMITER
+                    <li class="page-item active"><a class="page-link" href="index.php?category={$cat_id}&page={$i}">{$i}</a></li>
+                    DELIMITER;
+                    echo $page_link;
+                }
             }
         }
     }

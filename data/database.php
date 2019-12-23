@@ -5,7 +5,7 @@ class Database
     public $host = "localhost";
     public $user = "root";
     public $pass = "";
-    public $dbname = "uit-web";
+    public $dbname = "uit";
 
     public $link;
     public $error;
