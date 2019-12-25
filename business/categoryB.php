@@ -37,16 +37,29 @@ class CategoryB
     }
     public function GetProductsInGroup($cat_id, $link_num)
     {
-        $session_name = "listProducts_" . $cat_id . "_" . $link_num;
-        if (isset($_SESSION["{$session_name}"])) {
-            $result = $_SESSION["{$session_name}"];
-            return $result;
+        $result = [];
+        $saved = false;
+        for ($i = 0; $i < $this->MAX_PRODUCT; $i++) {
+            $session_name = "listProducts_" . $cat_id . "_" . $link_num . "_" . $i;
+            if (isset($_SESSION["{$session_name}"])) {
+                $saved = true;
+                $result[] = $_SESSION["{$session_name}"];
+            }
         }
+        if ($saved) return $result;
 
         $offset = ($link_num - 1) * $this->MAX_PRODUCT;
         $sql = "SELECT *FROM `product` WHERE `cat_id`={$cat_id} LIMIT {$offset},{$this->MAX_PRODUCT}";
         $db = new Database();
-        $result = $db->select($sql);
+
+        $data = $db->select($sql);
+        for ($i = 0; $i < $this->MAX_PRODUCT; $i++) {
+            $session_name = "listProducts_" . $cat_id . "_" . $link_num . "_" . $i;
+            if ($row = mysqli_fetch_array($data)) {
+                $result[$i] = $row;
+                $_SESSION["{$session_name}"] = $row;
+            }
+        }
         return $result;
     }
 }
