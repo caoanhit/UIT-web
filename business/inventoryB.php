@@ -1,7 +1,7 @@
 <?php
 $test = new InventoryB();
 $from = "2019-08-01";
-$to = "2019-10-05";
+$to = "2019-12-30";
 //$test->UpdatePerformanceTable(1, $from, $to);
 //$test->GetPoorPerformanceList($from, $to);
 class InventoryB
@@ -9,14 +9,15 @@ class InventoryB
     public function GetPoorPerformanceList($from, $to)
     {
         $product_list = $this->GetRelevantProductID($from, $to);
-
-        while ($row = mysqli_fetch_array($product_list)) {
-            $product_id = $row['product_id'];
-            $performance = $this->GetLatestPerformance($product_id);
-            $plist["$product_id"] = "{$performance}";
+        if ($product_list != null) {
+            while ($row = mysqli_fetch_array($product_list)) {
+                $product_id = $row['product_id'];
+                $performance = $this->GetLatestPerformance($product_id);
+                $plist["$product_id"] = "{$performance}";
+            }
+            asort($plist);
+            return $plist;
         }
-        asort($plist);
-        return $plist;
     }
     public function GetLatestPerformance($product_id)
     {

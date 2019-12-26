@@ -18,10 +18,10 @@ class ProductP
         $row = mysqli_fetch_array($result);
 
         if ($pa->CheckIfHighView($row['product_id'], $this->from, $this->to))
-            $this->ShowSingleSaleProduct($row['product_name'], $row['product_price'], $row['product_price'] * 0.9, $row['product_img']);
+            $this->ShowSingleSaleProduct($row['product_name'], $row['product_price'], $row['product_price'] * 0.9, $product_id, $row['product_img']);
 
         else
-            $this->ShowSingleProduct($row['product_name'], $row['product_price'], $row['product_img']);
+            $this->ShowSingleProduct($row['product_name'], $row['product_price'], $product_id, $row['product_img']);
 
         $pab = new ProductAnalysisB();
         $pab->UpdateViewOfProduct($product_id);
@@ -38,7 +38,7 @@ class ProductP
         return $product_id;
     }
 
-    public function ShowSingleProduct($name, $price, $img)
+    public function ShowSingleProduct($name, $price, $product_id, $img)
     {
         $price = number_format($price, 0, ",", ".") . " đ";
         $product = <<<DELIMITER
@@ -48,7 +48,7 @@ class ProductP
                     <div class="card-body >
                         <h4 class="card-title">{$name}</h4>
                         <p class="card-text">{$price}</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a>
+                        <a href="additem.php?product_id={$product_id}" class="btn btn-primary">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@ class ProductP
             DELIMITER;
         echo $product;
     }
-    public function ShowSingleSaleProduct($name, $price_original, $price, $img)
+    public function ShowSingleSaleProduct($name, $price_original, $price, $product_id, $img)
     {
         $price = number_format($price, 0, ",", ".") . " đ";
         $price_original = number_format($price_original, 0, ",", ".") . " đ";
@@ -68,7 +68,7 @@ class ProductP
                         <h4 class="card-title">{$name}</h4>
                         <p class="card-text" style="font-size: smaller;"> <del>{$price_original}</del>  -10%</p>
                         <p class="card-text">{$price}</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a>
+                        <a href="additem.php?product_id={$product_id}" class="btn btn-primary">Add to cart</a>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@ class ProductP
                     <h4 class="card-title">{$name}</h4>
                     <p class="card-text"  style="font-size: smaller"><br></p>
                     <p class="card-text">{$price}</p>
-                    <a href="#" class="btn btn-primary">Add to cart</a>
+                    <a href="additem.php?product_id={$id}" class="btn btn-primary">Add to cart</a>
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@ class ProductP
                     <h4 class="card-title">{$name}</h4>
                     <p class="card-text" style="font-size: smaller;"> <del>{$price_original}</del>  -10%</p>
                     <p class="card-text">{$price}</p>
-                    <a href="#" class="btn btn-primary">Add to cart</a>
+                    <a href="additem.php?product_id={$id}" class="btn btn-primary">Add to cart</a>
                 </div>
             </div>
         </div>
@@ -131,13 +131,13 @@ class ProductP
     {
         $ib = new InventoryB();
         $featuredList = $ib->GetPoorPerformanceList($this->from, $this->to);
-
-        foreach ($featuredList as $x => $x_value) {
-            $pb = new ProductB();
-            $result = $pb->GetProductsByID($x);
-            $row = mysqli_fetch_array($result);
-            $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id'], $row['product_img']);
-        }
+        if ($featuredList != null)
+            foreach ($featuredList as $x => $x_value) {
+                $pb = new ProductB();
+                $result = $pb->GetProductsByID($x);
+                $row = mysqli_fetch_array($result);
+                $product = $this->ShowProduct($row['product_name'], $row['product_price'], $row['product_id'], $row['product_img']);
+            }
     }
 
     public function ShowProductsByUser()
